@@ -1,0 +1,76 @@
+syntax = "proto3";
+package webhook.middleware.v1;
+
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+
+option go_package = "/pkg/protobuf";
+
+message AddRouteRequest {
+    string id = 1;
+    string uri = 2;
+    string body = 3;
+    map<string, string> headers = 4;
+}
+
+message GetRouteRequest {
+    string id = 1;
+}
+
+message GetRouteResponse {
+    string id = 1;
+    string uri = 2;
+    string body = 3;
+    map<string, string> headers = 4;
+}
+
+message UpdateRouteRequest {
+    string id = 1;
+    string uri = 2;
+    string body = 3;
+    map<string, string> headers = 4;
+}
+
+message DeleteRouteRequest {
+    string id = 1;
+}
+
+message IncommingWebhookRequest {
+    string route_id = 1;
+    bytes body = 2;
+}
+
+service WebhookMiddleware {
+    rpc AddRoute(AddRouteRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            post: "/routes",
+            body: "*"
+        };
+    }
+
+    rpc GetRoute(GetRouteRequest) returns (GetRouteResponse) {
+        option (google.api.http) = {
+            get: "/routes/{id}"
+        };
+    }
+
+    rpc UpdateRoute(UpdateRouteRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            put: "/routes/{id}",
+            body: "*"
+        };
+    }
+
+    rpc DeleteRoute(DeleteRouteRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            delete: "/routes/{id}"
+        };
+    }
+
+    rpc SendWebhook(IncommingWebhookRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            post: "/routes/{route_id}",
+            body: "body"
+        };
+    }
+}
