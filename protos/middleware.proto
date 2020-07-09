@@ -40,6 +40,21 @@ message IncommingWebhookRequest {
     bytes body = 2;
 }
 
+message ListRoutesRequest {
+    int32 skip = 1;
+    int32 take = 2;
+}
+
+message ListRoutesResponse {
+    message Item {
+        string id = 1;
+        string uri = 2;
+        string body = 3;
+        map<string, string> headers = 4;
+    }
+    repeated Item data = 1;
+}
+
 service WebhookMiddleware {
     rpc AddRoute(AddRouteRequest) returns (google.protobuf.Empty) {
         option (google.api.http) = {
@@ -51,6 +66,12 @@ service WebhookMiddleware {
     rpc GetRoute(GetRouteRequest) returns (GetRouteResponse) {
         option (google.api.http) = {
             get: "/routes/{id}"
+        };
+    }
+
+    rpc ListRoutes(ListRoutesRequest) returns (ListRoutesResponse) {
+        option (google.api.http) = {
+            get: "/routes"
         };
     }
 
