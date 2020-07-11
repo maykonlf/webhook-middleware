@@ -13,7 +13,7 @@ import (
 
 type RouteRepositoryI interface {
 	ListRoutes(ctx context.Context, skip, take int64) (*[]entities.Route, error)
-	CreateRoute(ctx context.Context, route *entities.Route) (*uuid.UUID, error)
+	AddRoute(ctx context.Context, route *entities.Route) (*uuid.UUID, error)
 	GetRoute(ctx context.Context, id *uuid.UUID) (*entities.Route, error)
 	UpdateRoute(ctx context.Context, id *uuid.UUID, route *entities.Route) error
 	DeleteRoute(ctx context.Context, id *uuid.UUID) error
@@ -57,7 +57,7 @@ func (r *RouteRepository) ListRoutes(ctx context.Context, skip, take int64) (*[]
 	return &routes, nil
 }
 
-func (r *RouteRepository) CreateRoute(ctx context.Context, route *entities.Route) (*uuid.UUID, error) {
+func (r *RouteRepository) AddRoute(ctx context.Context, route *entities.Route) (*uuid.UUID, error) {
 	route.ID = uuid.New()
 	_, err := r.collection.InsertOne(ctx, route)
 	return &route.ID, err

@@ -23,7 +23,7 @@ func TestCreateRoute(t *testing.T) {
 
 	ctx := context.Background()
 
-	id, err := repository.CreateRoute(ctx, route)
+	id, err := repository.AddRoute(ctx, route)
 	assert.Nil(t, err, "error should be nil")
 	assert.NotNil(t, id, "id should not be nil")
 
@@ -46,7 +46,7 @@ func TestCreateRoute(t *testing.T) {
 
 	var ids []uuid.UUID
 	for i := 0; i < 3; i++ {
-		id, err := repository.CreateRoute(ctx, &entities.Route{
+		id, err := repository.AddRoute(ctx, &entities.Route{
 			Body: "some body",
 		})
 		assert.Nil(t, err)
